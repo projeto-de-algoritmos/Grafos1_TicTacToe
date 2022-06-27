@@ -1,27 +1,7 @@
 
 let tab = ['.', '.', '.', '.', '.', '.', '.', '.', '.']
 let pos = [tab]
-// const o_number = 4
-// const x_number = 5
-
-
-// function BFS_caminho(cabeca, final, jogadasanteriores) {
-//     var posatual = jogadasanteriores.length
-//     var resposta;
-//     aux = Array.from(cabeca)
-//     for (i = 0; i < posatual; i++) {
-//         aux = aux.filhos[jogadasanteriores[i]]
-//     }
-//     possiveis = aux.filhos.length
-//     for (i = 0; i < possiveis; i++) {
-//         if (aux.filhos[i].result == final) {
-//             resposta = jogadasanteriores.concat(i)
-//             return resposta
-//         }
-//     }
-// }
-
-
+let PosJogadas = []
 function print(tab) {
     console.log(tab[0] + " | " + tab[1] + " | " + tab[2])
     console.log("--  --  --")
@@ -103,7 +83,56 @@ function Soma_Pontos(cabeca) {
     return cabeca.points
 }
 
+// ['X', '.', '.', '.', '.', 'O', '.', '.', '.'] => percorrerparaacharessejogo => vainosfilhosacharamelhorpontuacao => salvaPosjogadas => retornaJogo => diferenca => incrementaessajogada
+
+function comparajogadas( PosJogadas, possibilidades) {
+    let aux = Object.assign(Object.create(Object.getPrototypeOf(possibilidades)), possibilidades)
+    for (let i = 0; i < PosJogadas.length; i++) {
+        aux = aux.filhos[PosJogadas[i]]
+    }
+    // console.log(aux)
+    let max = aux.filhos[0].points
+    let posmax = 0
+    for (let i = 0; i < aux.filhos.length; i++) {
+        if (aux.filhos[i].points > max) {
+            posmax = i
+            max = aux.filhos[i].points
+        }
+    }
+    PosJogadas.push(posmax)
+    return aux.filhos[posmax].valor
+}
+
 possibilidades = gerarPossibilidades(tab)
 Soma_Pontos(possibilidades)
-console.log((possibilidades).filhos[7].filhos[4].filhos[0].filhos[1])
-                         
+
+PosJogadas.push(0)
+console.log(comparajogadas(PosJogadas, possibilidades))
+PosJogadas.push(1)
+console.log(comparajogadas(PosJogadas, possibilidades))
+PosJogadas.push(2)
+console.log(comparajogadas(PosJogadas, possibilidades))
+PosJogadas.push(1)
+console.log(comparajogadas(PosJogadas, possibilidades))
+jogoAtual = [
+    'X', '.', '.',
+    '.', '.', '.',
+    '.', '.', '.'
+]
+
+function retornaPosicaoJogada(jogoAtual, novoJogo) {
+    console.log(novoJogo)
+    for (let i = 0; i < 9; i++) {
+        if(jogoAtual[i] != novoJogo[i])
+            return i;
+    }
+    
+}
+
+novoJogo = comparajogadas(PosJogadas, possibilidades)
+// console.log(retornaPosicaoJogada(jogoAtual, novoJogo))
+
+
+
+
+
