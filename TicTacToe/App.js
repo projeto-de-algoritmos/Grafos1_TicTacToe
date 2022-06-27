@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { gerarPossibilidades, comparajogadas, retornaPosicaoJogada, Soma_Pontos, achaNo} from './Graph'
+import { gerarPossibilidades, comparajogadas, retornaPosicaoJogada, Soma_Pontos, achaNo, Valida} from './Graph'
 
 const tab = ['.', '.', '.', '.', '.', '.', '.', '.', '.'];
 
@@ -18,25 +18,64 @@ export default function App() {
   const [x8, setX8] = useState('.');
   const [x9, setX9] = useState('.');
   const [vez, setVez] = useState('X');
+  const [result, setResult] = useState(null);
+
+  const posJogadas = useRef([]);
+  const array = useRef([]);
 
   const possibilidades = useRef(null);
-  const posJogadas = useRef([]);
 
   useEffect(() => {
-    possibilidades.current = gerarPossibilidades(tab)
-    Soma_Pontos(possibilidades.current)
+    possibilidades.current = gerarPossibilidades(tab);
+    Soma_Pontos(possibilidades.current);
   }, []);
 
-  const jogada = () => {
-    let arrayDeJogada = [x1, x2, x3, x4, x5, x6, x7, x8, x9]
-    let a = achaNo(arrayDeJogada, posJogadas.current, possibilidades.current)
-    console.log(a)
+  const jogada = (arrayDeJogada) => {
+      achaNo(arrayDeJogada, posJogadas.current,  possibilidades.current);
+      let posicaoPc = retornaPosicaoJogada(arrayDeJogada, comparajogadas( posJogadas.current,  possibilidades.current));
+      jogadaPc(posicaoPc)
   }
 
   const handleVez = () => {
     if(vez == 'X') setVez('O')
     if(vez == 'O') setVez('X')
   }
+
+  const jogadaPc = (casaPc) => {
+    let casa = 1 + casaPc;
+    switch(casa){
+      case 1:
+        setX1('O');
+        break;
+      case 2:
+        setX2('O');
+        break;
+      case 3:
+        setX3('O');
+        break;
+      case 4:
+        setX4('O');
+        break;
+      case 5:
+        setX5('O');
+        break;
+      case 6:
+        setX6('O');
+        break;
+      case 7:
+        setX7('O');
+        break;
+      case 8:
+        setX8('O');
+        break;
+      case 9:
+        setX9('O');
+        break;
+    }
+      handleVez();
+  } 
+
+
 
   const resetaCasas = () => {
       setX1('.');
@@ -49,9 +88,14 @@ export default function App() {
       setX8('.');
       setX9('.');
       setVez('X');
+      posJogadas.current = [];
+      array.current = []
+      setResult(null);
   }
 
   const casaClicada = (casa) => {
+    array.current = [x1, x2, x3, x4, x5, x6, x7, x8, x9];
+    array.current[casa - 1] = vez;
 
     switch(casa){
       case 1:
@@ -85,10 +129,24 @@ export default function App() {
 
     handleVez();
   }
+  
+  useEffect(() => {
+    let resultado = Valida([x1, x2, x3, x4, x5, x6, x7, x8, x9]);
+    if(resultado != false) {
+      setResult(resultado)
+    }
+    else {
+      if(vez == 'O') {
+          setTimeout(() => jogada(array.current), 2100);
+      }
+    }
+  }, [vez]);
+
 
   return (
         <View style={styles.container}>
-          <Text style={styles.cabecalho}>{"Vez do jogador " + vez}</Text>
+          {result ? <Text style={styles.cabecalho}>{"O vencedor é: " + result}</Text>: null}
+          {result == null ?<Text style={styles.cabecalho}>{"Vez do jogador " + vez}</Text>:null}
           <View style={styles.linha1}>
             <View 
               style={{
@@ -104,7 +162,7 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(1)}
-                  disabled={x1 == '.' ? false: true}
+                  disabled={x1 == '.' && vez == 'X' && result == null ? false: true}
                 >
                   {
                     x1 == '.' ?
@@ -129,7 +187,7 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(2)}
-                  disabled={x2 == '.'? false:true}
+                  disabled={x2 == '.' && vez == 'X' && result == null? false:true}
                 >
                   {
                     x2 == '.' ?
@@ -153,7 +211,7 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(3)}
-                  disabled={x3 == '.' ? false:true}
+                  disabled={x3 == '.' && vez == 'X'&& result == null?  false:true}
                 >
                   {
                     x3 == '.' ?
@@ -181,7 +239,7 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(4)}
-                  disabled={x4 == '.' ? false:true}
+                  disabled={x4 == '.' && vez == 'X' && result == null?  false:true}
                 >
                   {
                     x4 == '.' ?
@@ -206,7 +264,7 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(5)}
-                  disabled={x5 == '.' ? false:true}
+                  disabled={x5 == '.' && vez == 'X' && result == null?  false:true}
                 >
                   {
                     x5 == '.' ?
@@ -230,7 +288,7 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(6)}
-                  disabled={x6 == '.' ? false:true}
+                  disabled={x6 == '.' && vez == 'X' && result == null? false:true}
                 >
                   {
                     x6 == '.' ?
@@ -257,7 +315,7 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(7)}
-                  disabled={x7 == '.' ? false:true}
+                  disabled={x7 == '.' && vez == 'X' && result == null ? false:true}
                 >
                   {
                     x7 == '.' ?
@@ -281,7 +339,7 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(8)}
-                  disabled={x8 == '.' ? false:true}
+                  disabled={x8 == '.' && vez == 'X' && result == null ? false:true}
                 >
                   {
                     x8 == '.' ?
@@ -304,7 +362,7 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(9)}
-                  disabled={x9 == '.' ? false:true}
+                  disabled={x9 == '.' && vez == 'X' && result == null ? false: true}
                 >
                   {
                     x9 == '.' ?

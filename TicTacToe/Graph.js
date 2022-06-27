@@ -1,7 +1,3 @@
-
-let tab = ['.', '.', '.', '.', '.', '.', '.', '.', '.']
-let PosJogadas = []
-
 class no {
     constructor (tab,filhos = []) {
     this.valor =  tab,
@@ -11,7 +7,7 @@ class no {
     }
 }
 
-function Valida(tab) {
+export function Valida(tab) {
     if ((tab[0] == tab[1]) && (tab[1] == tab[2]) && tab[1] != '.')return tab[1]
     if ((tab[3] == tab[4]) && (tab[4] == tab[5]) && tab[4] != '.') return tab[4]
     if ((tab[6] == tab[7]) && (tab[7] == tab[8]) && tab[7] != '.') return tab[7]
@@ -92,34 +88,24 @@ export function comparajogadas( PosJogadas, possibilidades) {
     return aux.filhos[posmax].valor
 }
 
-possibilidades = gerarPossibilidades(tab)
-Soma_Pontos(possibilidades)
-PosJogadas.push(0)
-
-jogoAtual = [
-    'X', '.', '.',
-    '.', '.', '.',
-    '.', '.', '.'
-]
 
 export function achaNo(jogo, posJogadas, possibilidades) {
     let aux = Object.assign(Object.create(Object.getPrototypeOf(possibilidades)), possibilidades)
-    for (let i = 0; i < PosJogadas.length; i++) {
-        aux = aux.filhos[PosJogadas[i]]
+    for (let i = 0; i < posJogadas.length; i++) {
+        aux = aux.filhos[posJogadas[i]]
     }
-    
+
     for (let i = 0; i < aux.filhos.length; i++) {
         if (comparaJogoIgual(aux.filhos[i].valor, jogo)) {
-            return i;
+            posJogadas.push(i);
         }
     }
 
 }
 
-
 function comparaJogoIgual(jogo1, jogo2) {
     for (let i = 0; i < 9; i++) {
-        if(jogoAtual[i] != novoJogo[i])
+        if(jogo1[i] != jogo2[i])
             return false;
     }
     return true;
@@ -127,16 +113,13 @@ function comparaJogoIgual(jogo1, jogo2) {
 }
 
 export function retornaPosicaoJogada(jogoAtual, novoJogo) {
-    console.log(novoJogo)
+    
     for (let i = 0; i < 9; i++) {
         if(jogoAtual[i] != novoJogo[i])
             return i;
     }
     
 }
-
-novoJogo = comparajogadas(PosJogadas, possibilidades)
-console.log(retornaPosicaoJogada(jogoAtual, novoJogo))
 
 
 
