@@ -1,20 +1,37 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { gerarPossibilidades, comparajogadas, retornaPosicaoJogada, Soma_Pontos, achaNo} from './Graph'
+
+const tab = ['.', '.', '.', '.', '.', '.', '.', '.', '.'];
+
 export default function App() {
 
-  const [x1, setX1] = useState(null);
-  const [x2, setX2] = useState(null);
-  const [x3, setX3] = useState(null);
-  const [x4, setX4] = useState(null);
-  const [x5, setX5] = useState(null);
-  const [x6, setX6] = useState(null);
-  const [x7, setX7] = useState(null);
-  const [x8, setX8] = useState(null);
-  const [x9, setX9] = useState(null);
-
+  const [x1, setX1] = useState('.');
+  const [x2, setX2] = useState('.');
+  const [x3, setX3] = useState('.');
+  const [x4, setX4] = useState('.');
+  const [x5, setX5] = useState('.');
+  const [x6, setX6] = useState('.');
+  const [x7, setX7] = useState('.');
+  const [x8, setX8] = useState('.');
+  const [x9, setX9] = useState('.');
   const [vez, setVez] = useState('X');
+
+  const possibilidades = useRef(null);
+  const posJogadas = useRef([]);
+
+  useEffect(() => {
+    possibilidades.current = gerarPossibilidades(tab)
+    Soma_Pontos(possibilidades.current)
+  }, []);
+
+  const jogada = () => {
+    let arrayDeJogada = [x1, x2, x3, x4, x5, x6, x7, x8, x9]
+    let a = achaNo(arrayDeJogada, posJogadas.current, possibilidades.current)
+    console.log(a)
+  }
 
   const handleVez = () => {
     if(vez == 'X') setVez('O')
@@ -22,15 +39,15 @@ export default function App() {
   }
 
   const resetaCasas = () => {
-      setX1(null);
-      setX2(null);
-      setX3(null);
-      setX4(null);
-      setX5(null);
-      setX6(null);
-      setX7(null);
-      setX8(null);
-      setX9(null);
+      setX1('.');
+      setX2('.');
+      setX3('.');
+      setX4('.');
+      setX5('.');
+      setX6('.');
+      setX7('.');
+      setX8('.');
+      setX9('.');
       setVez('X');
   }
 
@@ -68,6 +85,7 @@ export default function App() {
 
     handleVez();
   }
+
   return (
         <View style={styles.container}>
           <Text style={styles.cabecalho}>{"Vez do jogador " + vez}</Text>
@@ -86,10 +104,10 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(1)}
-                  disabled={x1 ? true: false}
+                  disabled={x1 == '.' ? false: true}
                 >
                   {
-                    x1 == null ?
+                    x1 == '.' ?
                     <View style={{padding: 30}}></View>
                     : x1 == 'X' 
                     ? <MaterialIcons name='close' size={60} color="#000000"/>
@@ -111,10 +129,10 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(2)}
-                  disabled={x2 ? true: false}
+                  disabled={x2 == '.'? false:true}
                 >
                   {
-                    x2 == null ?
+                    x2 == '.' ?
                     <View style={{padding: 30}}></View>
                     : x2 == 'X' 
                     ? <MaterialIcons name='close' size={60} color="#000000"/>
@@ -135,10 +153,10 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(3)}
-                  disabled={x3 ? true: false}
+                  disabled={x3 == '.' ? false:true}
                 >
                   {
-                    x3 == null ?
+                    x3 == '.' ?
                     <View style={{padding: 30}}></View>
                     : x3 == 'X' 
                     ? <MaterialIcons name='close' size={60} color="#000000"/>
@@ -163,10 +181,10 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(4)}
-                  disabled={x4 ? true: false}
+                  disabled={x4 == '.' ? false:true}
                 >
                   {
-                    x4 == null ?
+                    x4 == '.' ?
                     <View style={{padding: 30}}></View>
                     : x4 == 'X' 
                     ? <MaterialIcons name='close' size={60} color="#000000"/>
@@ -188,10 +206,10 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(5)}
-                  disabled={x5 ? true: false}
+                  disabled={x5 == '.' ? false:true}
                 >
                   {
-                    x5 == null ?
+                    x5 == '.' ?
                     <View style={{padding: 30}}></View>
                     : x5 == 'X' 
                     ? <MaterialIcons name='close' size={60} color="#000000"/>
@@ -212,10 +230,10 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(6)}
-                  disabled={x6 ? true: false}
+                  disabled={x6 == '.' ? false:true}
                 >
                   {
-                    x6 == null ?
+                    x6 == '.' ?
                     <View style={{padding: 30}}></View>
                     : x6 == 'X' 
                     ? <MaterialIcons name='close' size={60} color="#000000"/>
@@ -239,10 +257,10 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(7)}
-                  disabled={x7 ? true: false}
+                  disabled={x7 == '.' ? false:true}
                 >
                   {
-                    x7 == null ?
+                    x7 == '.' ?
                     <View style={{padding: 30}}></View>
                     : x7 == 'X' 
                     ? <MaterialIcons name='close' size={60} color="#000000"/>
@@ -263,10 +281,10 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(8)}
-                  disabled={x8 ? true: false}
+                  disabled={x8 == '.' ? false:true}
                 >
                   {
-                    x8 == null ?
+                    x8 == '.' ?
                     <View style={{padding: 30}}></View>
                     : x8 == 'X' 
                     ? <MaterialIcons name='close' size={60} color="#000000"/>
@@ -286,10 +304,10 @@ export default function App() {
                     margin: 4
                   }}
                   onPress={() => casaClicada(9)}
-                  disabled={x9 ? true: false}
+                  disabled={x9 == '.' ? false:true}
                 >
                   {
-                    x9 == null ?
+                    x9 == '.' ?
                     <View style={{padding: 30}}></View>
                     : x9 == 'X' 
                     ? <MaterialIcons name='close' size={60} color="#000000"/>
