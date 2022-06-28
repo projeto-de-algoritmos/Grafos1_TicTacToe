@@ -16,7 +16,18 @@ O jogo e muito simples e consiste em um tabuleiro com 9 espaços gerados por 2 l
 
 O jogo consiste de um aplicativo para android onde o software escolhe os movimentos de forma que tenha maior propabilidade de vitoria,ou empate para o computador. Foi gerado inicialmente um grafo conectado com todas as possibilidades de jogo possiveis, e fazendo uma análise desse grafo e feita a escolha de qual movimento o software deve fazer
 ## Screenshots
-Adicione 3 ou mais screenshots do projeto em funcionamento.
+
+O App ficará disponível na sua gaveta de aplicativos.
+
+![Jogo_Da_velha](TicTacToe/assets/gaveta.png)
+
+Ao clicar o jogo já está disponível para jogar. Você começa sendo o 'X'
+
+![Jogo_Da_velha](TicTacToe/assets/jogo.png)
+
+O PC irá jogar de acordo com a árvore de grafos. Boa Sorte :). Para jogar novamente basta clicar em Resetar Game  
+
+![Jogo_Da_velha](TicTacToe/assets/jogada.png)
 
 ## Instalação 
 **Linguagem**: JavaScrypt<br>
