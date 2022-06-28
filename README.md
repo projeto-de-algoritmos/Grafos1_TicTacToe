@@ -35,10 +35,4 @@ O PC irá jogar de acordo com a árvore de grafos. Boa Sorte :). Para jogar nova
 
 Descreva os pré-requisitos para rodar o seu projeto e os comandos necessários.
 ### Requisitos de instalação:
-    -  Aparelho Android
-
-## Uso 
-Explique como usar seu projeto caso haja algum passo a passo após o comando de execução.
-
-## Outros 
-Quaisquer outras informações sobre seu projeto podem ser descritas abaixo.
+    -  Aparelho Android 8.0 ou superior
